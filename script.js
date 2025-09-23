@@ -24,7 +24,7 @@
         container.innerHTML = ''; // Clear previous content
 
             const element = document.createElement('div');
-            element.innerHTML = `${data.title} (${data.release_date})<br />${data.overview}`; // Assuming 'title' is a property in your API data
+            element.innerHTML = `<strong>${data.title}</strong> (${data.release_date})<br />${data.overview}`; // Assuming 'title' is a property in your API data
             container.appendChild(element);
 
             // Update the movie poster

@@ -12,7 +12,14 @@ body {
     display: flex;
     flex-direction: column;
     align-items: center;
+    max-width: 800px;
+    /* keeps text from going edge to edge */
+    margin: 0 auto;
+    /* centers the block */
+    padding: 0 20px;
+    /* adds spacing left/right */
     text-align: center;
+    /* optional: aligns text nicely */
 }
 
 #data-container p {
@@ -31,9 +38,10 @@ body {
     margin-top: 20px;
     border-radius: 8px;
 }
- h1 {
+
+h1 {
     font-family: 'Codystar', cursive;
     font-weight: bolder;
     font-size: 2.5em;
     margin-bottom: 20px;
-    }
+}
