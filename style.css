@@ -1,8 +1,8 @@
 body {
-    font-family: Arial, sans-serif;
     background-image: url(Cinema-Theatre-PNG-Photos.png);
     background-color: #343434;
     color: whitesmoke;
+    font-family: 'Limelight', sans-serif;
     background-size: cover;
     align-items: center;
     text-align: center;
@@ -22,7 +22,17 @@ body {
     /* optional: aligns text nicely */
 }
 
+#data-container h2 {
+    font-size: 1.75em;
+    margin: 5px 0;
+    border-radius: 5px;
+    align-items: center;
+    text-align: center;
+} 
+
 #data-container p {
+    font-size: 1.20em;
+    line-height: 1.6;
     margin: 10px 0;
     border-radius: 5px;
     align-items: center;

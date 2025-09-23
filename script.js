@@ -23,9 +23,13 @@
         const poster = document.getElementById('movie-poster'); // An HTML element to display the movie poster
         container.innerHTML = ''; // Clear previous content
 
-            const element = document.createElement('div');
-            element.innerHTML = `<strong>${data.title}</strong> (${data.release_date})<br />${data.overview}`; // Assuming 'title' is a property in your API data
+            const element = document.createElement('h2');
+            const plot = document.createElement('p');
+
+            element.innerHTML = `<strong>${data.title}</strong> (${data.release_date})`; // Assuming 'title' is a property in your API data
+            plot.innerHTML = `${data.overview}`; // Assuming 'overview' is a property in your API data
             container.appendChild(element);
+            container.appendChild(plot);
 
             // Update the movie poster
             poster.src = data.poster_path ? `https://image.tmdb.org/t/p/w500${data.poster_path}` : 'placeholder.jpg';
