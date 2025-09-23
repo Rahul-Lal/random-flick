@@ -1,1 +1,13 @@
+    #data-container {
+        border: 1px solid #ccc;
+        padding: 20px;
+        margin: 20px;
+    }
 
+    #movie-poster {
+        width: 330px;
+        height: auto;
+        display: flex;
+        margin-top: 20px;
+        border-radius: 8px;
+    }
