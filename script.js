@@ -1,16 +1,23 @@
 
     async function fetchData() {
         try {
-            let number = Math.floor(Math.random() * 998) + 2; // Random number between 2 and 999
-            console.log(number);
+            let number = Math.floor(Math.random() * 999999) + 1; // Random number between 1 and 999999
+            console.log(`ID: ${number}`);
             const response = await fetch(`https://api.themoviedb.org/3/movie/${number}?api_key=96628c0e6c6bba7100b21737333c56cf`); // Replace with your API endpoint
             if (!response.ok) {
                 throw new Error(`HTTP error! status: ${response.status}`);
             }
             const data = await response.json(); // Or .text(), .blob(), etc., depending on the API response type
-            console.log(data); // Process the received data
+            console.log(`Title: ${data.title}`);
+            console.log(`Adult: ${data.adult}`);
+            console.log(`Genres: ${data.genres.map(genre => genre.name).join(', ')}`); // Process the received data
             // Call a function to update the UI with this data
-            updateUI(data);
+            if (data.adult === false) {
+                updateUI(data);
+            }
+            else{
+                fetchData(); // Retry fetching if the content is adult
+            }
         } catch (error) {
             console.error('Error fetching data:', error);
         }
