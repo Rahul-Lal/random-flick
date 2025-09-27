@@ -6,6 +6,7 @@ body {
     background-size: cover;
     align-items: center;
     text-align: center;
+    background-repeat: no-repeat;
 }
 
 #data-container {
@@ -70,4 +71,52 @@ button {
 
 button:hover {
     background-color: #e03e00;
+}
+
+@media (max-width: 600px) {
+    body{
+        background-image: url(redcurtains.jpg);
+    }
+    #data-container {
+        padding: 0 10px;
+    }
+    #movie-poster {
+        width: 150px;
+        height: auto;
+        position: relative;
+        z-index: -0;
+    }
+    h1 {
+        font-size: 2.75em;
+    }
+    #movie-overview {
+        font-size: 1px;
+    }
+    button {
+        font-size: 2.3em;
+        width: 100%;
+        position: fixed;
+        bottom: 69px;
+        left: 0;
+    }
+}
+
+@media (max-width: 768px) {
+    body{
+        background-image: url(redcurtains.jpg);
+    }
+    #movie-poster {
+        width: 200px;
+        height: auto;
+    }
+    h1 {
+        font-size: 2.25em;
+    }
+    button {
+        font-size: 3.3em;
+        width: 100%;
+        position: fixed;
+        bottom: 75px;
+        left: 0;
+    }
 }
