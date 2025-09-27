@@ -1,7 +1,7 @@
 
     async function fetchData() {
         try {
-            let number = Math.floor(Math.random() * 999999) + 1; // Random number between 1 and 999999
+            let number = Math.floor(Math.random() * 5000) + 1; // Random number between 1 and 999999
             console.log(`ID: ${number}`);
 
             const response = await fetch(`https://api.themoviedb.org/3/movie/${number}?api_key=96628c0e6c6bba7100b21737333c56cf`); // Replace with your API endpoint
