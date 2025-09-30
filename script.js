@@ -37,11 +37,15 @@ function updateUI(data) {
 
     const element = document.createElement('h2');
     const plot = document.createElement('p');
+    const genre = document.createElement('p');
 
     element.innerHTML = `<b>${data.title}</b> (${data.release_date})`; // Assuming 'title' is a property in your API data
     plot.innerHTML = `${data.overview}`; // Assuming 'overview' is a property in your API data
+    genre.innerHTML = `Genre: ${data.genres.map(g => g.name).join(', ')}`; // Assuming 'genres' is an array in your API data
+    
     container.appendChild(element);
     container.appendChild(plot);
+    container.appendChild(genre);
 
     // Update the movie poster
     poster.src = data.poster_path ? `https://image.tmdb.org/t/p/w500${data.poster_path}` : 'placeholder.jpg';
