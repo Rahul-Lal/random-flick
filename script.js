@@ -11,10 +11,10 @@ async function fetchData() {
         if (!response.ok) {
             throw new Error(`HTTP error! status: ${response.status}`);
         }
-        const data = await response.json(); // Or .text(), .blob(), etc., depending on the API response type
+        const data = await response.json();
         console.log(`Title: ${data.title}`);
         console.log(`Adult: ${data.adult}`);
-        console.log(`Genres: ${data.genres.map(genre => genre.name).join(', ')}`); // Process the received data
+        console.log(`Genres: ${data.genres.map(genre => genre.name).join(', ')}`);
         // Call a function to update the UI with this data
         if (data.adult === false) {
             updateUI(data);
@@ -36,16 +36,16 @@ function updateUI(data) {
     container.innerHTML = ''; // Clear previous content
 
     const element = document.createElement('h2');
+    const genreAndReleaseDate = document.createElement('p');
     const plot = document.createElement('p');
-    const genre = document.createElement('p');
 
-    element.innerHTML = `<b>${data.title}</b> (${data.release_date})`; // Assuming 'title' is a property in your API data
-    plot.innerHTML = `${data.overview}`; // Assuming 'overview' is a property in your API data
-    genre.innerHTML = `Genre: ${data.genres.map(g => g.name).join(', ')}`; // Assuming 'genres' is an array in your API data
+    element.innerHTML = `<strong>${data.title}</strong>`; 
+    plot.innerHTML = `${data.overview}`;
+    genreAndReleaseDate.innerHTML = `${data.genres.map(g => g.name).join(', ')} | ${data.release_date}`;
     
     container.appendChild(element);
+    container.appendChild(genreAndReleaseDate);
     container.appendChild(plot);
-    container.appendChild(genre);
 
     // Update the movie poster
     poster.src = data.poster_path ? `https://image.tmdb.org/t/p/w500${data.poster_path}` : 'placeholder.jpg';
