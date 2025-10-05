@@ -75,6 +75,16 @@ button:hover {
     background-color: #e03e00;
 }
 
+a {
+    color: #ff4500;
+    text-decoration: none;
+}
+
+a:hover {
+    color: #e03e00;
+    font-weight: bolder;
+}
+
 @media (max-width: 600px) {
     body{
         background-image: url(redcurtains.jpg);
