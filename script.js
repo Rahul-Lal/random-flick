@@ -1,7 +1,7 @@
 
 async function fetchData() {
     try {
-        let number = Math.floor(Math.random() * 50000) + 1; // Random number between 1 and 50000
+        let number = Math.floor(Math.random() * 1000000) + 1; // Random number between 1 and 10000
         console.log(`ID: ${number}`);
 
         const response = await fetch(`https://api.themoviedb.org/3/movie/${number}?api_key=96628c0e6c6bba7100b21737333c56cf`); // Replace with your API endpoint
@@ -11,18 +11,16 @@ async function fetchData() {
         if (!response.ok) {
             throw new Error(`HTTP error! status: ${response.status}`);
         }
+        
         const data = await response.json();
-        console.log(`Title: ${data.title}`);
-        console.log(`Genres: ${data.genres.map(genre => genre.name).join(', ')}`);
-        console.log(`imdb_id: ${data.imdb_id}`);
-        console.log(`Country: ${data.production_countries.map(country => country.name).join(', ')}`);
-        console.log(`Adult: ${data.adult}`);
+        console.log(`Title: ${data.title};\nGenres: ${data.genres[0].name};\nimdb_id: ${data.imdb_id};\nCountry: ${data.production_countries[0].name};\nRelease Date: ${data.release_date};\nAdult: ${data.adult};\n--- END OF LINE ---\n \n`);
+
         // Call a function to update the UI with this data
         if (data.adult === false) {
             if (
-                (data.production_countries.map(country => country.name).includes("United States of America"))
-                || (data.production_countries.map(country => country.name).includes("United Kingdom"))
-            || (data.production_countries.map(country => country.name).includes("New Zealand"))) {
+                (data.production_countries[0].name === "United States of America")
+                || (data.production_countries[0].name === "United Kingdom")
+                || (data.production_countries[0].name === "New Zealand")) {
                 updateUI(data);
                 // Do something specific for movies from the US or UK
             } else {
@@ -32,7 +30,8 @@ async function fetchData() {
         else {
             fetchData(); // Retry fetching if the content is adult
         }
-    } catch (error) {
+    }
+    catch (error) {
         console.error('Error fetching data:', error);
         fetchData(); // Retry fetching if the movie is not found
     }
@@ -51,7 +50,7 @@ function updateUI(data) {
 
     element.innerHTML = `<strong>${data.title}</strong>`;
     plot.innerHTML = `${data.overview}`;
-    genreReleaseDateIMDB.innerHTML = `${data.genres.map(g => g.name).join(', ')} | ${data.release_date} | <a href="https://www.imdb.com/title/${data.imdb_id}" target="_blank">IMDB</a>`;
+    genreReleaseDateIMDB.innerHTML = `${data.genres[0].name} | ${data.release_date} | <a href="https://www.imdb.com/title/${data.imdb_id}" target="_blank">IMDB</a>`;
 
     container.appendChild(element);
     container.appendChild(genreReleaseDateIMDB);
