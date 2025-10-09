@@ -47,13 +47,7 @@ async function fetchData() {
 
     if (data.genres.length !== 0) {
         if(data.production_countries.length !== 0){
-        console.log(`Title: ${data.title};
-            \nGenres: ${data.genres[0].name};
-            \nimdb_id: ${data.imdb_id};
-            \nCountry: ${data.production_countries[0].name};
-            \nRelease Date: ${data.release_date};
-            \nAdult: ${data.adult};
-            \n--- END OF LINE ---\n \n`);
+        console.log(`Title: ${data.title};\nGenres: ${data.genres[0].name};\nimdb_id: ${data.imdb_id};\nCountry: ${data.production_countries[0].name};\nRelease Date: ${data.release_date};\nAdult: ${data.adult};\n--- END OF LINE ---\n \n`);
         }
         else {
             fetchData();
@@ -92,7 +86,7 @@ function updateUI(data) {// An HTML element to display the movie poster
     container.appendChild(plot);
 
     // Update the movie poster
-    poster.src = data.poster_path ? `https://image.tmdb.org/t/p/w500${data.poster_path}` : 'placeholder.jpg';
+    poster.src = data.poster_path ? `https://image.tmdb.org/t/p/w500${data.poster_path}` : 'NoPosterAvailable.png';
 }
 
 
