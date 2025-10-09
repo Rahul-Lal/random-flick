@@ -33,18 +33,36 @@ async function fetchData() {
 
     const response = await fetch(`https://api.themoviedb.org/3/movie/${number}?api_key=96628c0e6c6bba7100b21737333c56cf`); // Replace with your API endpoint
 
+    if (response.ok === false) {
+        fetchData();
+        throw new Error(`HTTP error! status: ${response.status}`);
+    }
     if (response.status === 404) {
         console.error('Movie not found');
-    }
-    if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
+        alert("Movie Not Found. Please Try Again");
+        fetchData();
     }
 
     const data = await response.json();
-    const genreType = document.getElementById('genres').value;
-    console.log(`Genre: ${data.genres[0].id} = ${genreType}`);
 
-    console.log(`Title: ${data.title};\nGenres: ${data.genres[0].name};\nimdb_id: ${data.imdb_id};\nCountry: ${data.production_countries[0].name};\nRelease Date: ${data.release_date};\nAdult: ${data.adult};\n--- END OF LINE ---\n \n`);
+    if (data.genres.length !== 0) {
+        if(data.production_countries.length !== 0){
+        console.log(`Title: ${data.title};
+            \nGenres: ${data.genres[0].name};
+            \nimdb_id: ${data.imdb_id};
+            \nCountry: ${data.production_countries[0].name};
+            \nRelease Date: ${data.release_date};
+            \nAdult: ${data.adult};
+            \n--- END OF LINE ---\n \n`);
+        }
+        else {
+            fetchData();
+        }
+    }
+    else {
+        fetchData();
+    }
+
     // Call a function to update the UI with this data
     if (data.adult === false) {
         if (
@@ -63,26 +81,6 @@ async function fetchData() {
     }
 }
 
-
-console.log(`Title: ${data.title};\n<strong>Genres: ${data.genres[0].name};</strong>\nimdb_id: ${data.imdb_id};\nCountry: ${data.production_countries[0].name};\nRelease Date: ${data.release_date};\nAdult: ${data.adult};\n--- END OF LINE ---\n \n`);
-// console.log(genreType);
-// Call a function to update the UI with this data
-if (data.adult === false) {
-    if (
-        (data.production_countries[0].name === "United States of America")
-        || (data.production_countries[0].name === "United Kingdom")
-        || (data.production_countries[0].name === "New Zealand")) {
-        updateUI(data);
-        // Do something specific for movies from the US, UK or New Zealand
-    }
-    else {
-        fetchData(); // Retry fetching if the movie is not from the US, UK or New Zealand
-    }
-}
-else {
-    fetchData(); // Retry fetching if the content is adult
-}
-
 function updateUI(data) {// An HTML element to display the movie poster
     container.innerHTML = ''; // Clear previous content
     element.innerHTML = `<strong>${data.title}</strong>`;
@@ -98,23 +96,23 @@ function updateUI(data) {// An HTML element to display the movie poster
 }
 
 
-function choseGenre() {
-    const genreType = document.getElementById('genres');
-    const selectedGenre = genreType.value;
+// function choseGenre() {
+//     const genreType = document.getElementById('genres');
+//     const selectedGenre = genreType.value;
 
-    // You can now use the selectedGenre variable to filter or fetch data based on the chosen genre
-    console.log(`Selected genre: ${selectedGenre}`);
+//     // You can now use the selectedGenre variable to filter or fetch data based on the chosen genre
+//     console.log(`Selected genre: ${selectedGenre}`);
 
 
-    if (genreType === 0) {
-        try {
-            fetchData();
-        }
-        catch (error) {
-            console.error('Error fetching data:', error);
-            fetchData(); // Retry fetching if the movie is not found
-        }
-    }
-    else if (data.genres[0].id == genreType) { }
-    else { }
-}
+//     if (genreType === 0) {
+//         try {
+//             fetchData();
+//         }
+//         catch (error) {
+//             console.error('Error fetching data:', error);
+//             fetchData(); // Retry fetching if the movie is not found
+//         }
+//     }
+//     else if (data.genres[0].id == genreType) { }
+//     else { }
+// }
