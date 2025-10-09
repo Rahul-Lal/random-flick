@@ -2,7 +2,7 @@
 const container = document.getElementById('data-container'); // An HTML element to display data
 const poster = document.getElementById('movie-poster');
 const element = document.createElement('h2');
-const genreReleaseDateIMDB = document.createElement('p');
+const genreDateCountryIMDB = document.createElement('p');
 const plot = document.createElement('p');
 
 startPage();
@@ -28,7 +28,7 @@ async function startPage() {
 }
 
 async function fetchData() {
-    let number = Math.floor(Math.random() * 1000000) + 1; // Random number between 1 and 10000
+    let number = Math.floor(Math.random() * 150000) + 1; // Random number between 1 and 150000
     console.log(`ID: ${number}`);
 
     const response = await fetch(`https://api.themoviedb.org/3/movie/${number}?api_key=96628c0e6c6bba7100b21737333c56cf`); // Replace with your API endpoint
@@ -59,12 +59,8 @@ async function fetchData() {
 
     // Call a function to update the UI with this data
     if (data.adult === false) {
-        if (
-            (data.production_countries[0].name === "United States of America")
-            || (data.production_countries[0].name === "United Kingdom")
-            || (data.production_countries[0].name === "New Zealand")) {
+        if (data.vote_average >= 6.0) {
             updateUI(data);
-            // Do something specific for movies from the US, UK or New Zealand
         }
         else {
             fetchData(); // Retry fetching if the movie is not from the US, UK or New Zealand
@@ -79,10 +75,13 @@ function updateUI(data) {// An HTML element to display the movie poster
     container.innerHTML = ''; // Clear previous content
     element.innerHTML = `<strong>${data.title}</strong>`;
     plot.innerHTML = `${data.overview}`;
-    genreReleaseDateIMDB.innerHTML = `${data.genres[0].name} | ${data.release_date} | <a href="https://www.imdb.com/title/${data.imdb_id}" target="_blank">IMDB</a>`;
+
+
+
+    genreDateCountryIMDB.innerHTML = `${data.genres[0].name} | ${data.release_date} | ${data.production_countries[0].name} | <a href="https://www.imdb.com/title/${data.imdb_id}" target="_blank">IMDB</a>`;
 
     container.appendChild(element);
-    container.appendChild(genreReleaseDateIMDB);
+    container.appendChild(genreDateCountryIMDB);
     container.appendChild(plot);
 
     // Update the movie poster
