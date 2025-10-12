@@ -2,9 +2,18 @@
 const container = document.getElementById('data-container'); // An HTML element to display data
 const poster = document.getElementById('movie-poster');
 const element = document.createElement('h2');
-const genreDateCountryIMDB = document.createElement('p');
+const genreDateIMDB = document.createElement('p');
 const plot = document.createElement('p');
+const genreOfChoice = document.getElementById('genres');
+const genres = [28, 12, 16, 35, 80, 99, 18, 10751, 14, 36, 27, 10402, 9648, 10749, 878, 10770, 53, 10752, 37];
 
+let countryOfFilm = "Unknown Country";
+let genreOfFilm = "Unknown Genre";
+let yearOfFilm = "Unknown Year";
+
+/*
+    Start by fetching data for a specific movie 'Spider-Man' (ID: 557) to ensure the page loads with content - then allow random fetches
+*/
 startPage();
 
 async function startPage() {
@@ -19,7 +28,7 @@ async function startPage() {
         }
 
         const data = await response.json();
-        console.log(`Title: ${data.title};\nGenres: ${data.genres[0].name};\nimdb_id: ${data.imdb_id};\nCountry: ${data.production_countries[0].name};\nRelease Date: ${data.release_date};\nAdult: ${data.adult};\n--- END OF LINE ---\n \n`);
+        console.log(`Title: ${data.title};\nGenres: ${data.genres[0].name};\nimdb_id: ${data.imdb_id};\nCountry: ${data.production_countries[0].name};\nRelease Date: ${data.release_date};\n \nAdult: ${data.adult};\n \n--- END OF LINE ---\n \n`);
         updateUI(data);
     }
     catch (error) {
@@ -28,7 +37,7 @@ async function startPage() {
 }
 
 async function fetchData() {
-    let number = Math.floor(Math.random() * 150000) + 1; // Random number between 1 and 150000
+    let number = Math.floor(Math.random() * 1000000) + 1; // Random number between 1 and 1 million
     console.log(`ID: ${number}`);
 
     const response = await fetch(`https://api.themoviedb.org/3/movie/${number}?api_key=96628c0e6c6bba7100b21737333c56cf`); // Replace with your API endpoint
@@ -45,28 +54,24 @@ async function fetchData() {
 
     const data = await response.json();
 
-    if (data.genres.length !== 0) {
-        if(data.production_countries.length !== 0){
-        console.log(`Title: ${data.title};\nGenres: ${data.genres[0].name};\nimdb_id: ${data.imdb_id};\nCountry: ${data.production_countries[0].name};\nRelease Date: ${data.release_date};\nAdult: ${data.adult};\n--- END OF LINE ---\n \n`);
-        }
-        else {
-            fetchData();
-        }
-    }
-    else {
-        fetchData();
-    }
-
     // Call a function to update the UI with this data
     if (data.adult === false) {
-        if (data.vote_average >= 6.0) {
-            updateUI(data);
+        if (data.vote_average >= 4.0) {
+            try {
+                console.log(`Title: ${data.title};\nGenres: ${data.genres[0].name};\nimdb_id: ${data.imdb_id};\nCountry: ${data.production_countries[0].name};\nRelease Date: ${data.release_date};\nVote Average: ${data.vote_average};\n \nAdult: ${data.adult};\n \n--- END OF LINE ---\n \n`);
+                updateUI(data);
+            } catch (error) {
+                console.error('Error updating UI:', error);
+                fetchData(); // Retry fetching if there's an error updating the UI
+            }
         }
         else {
+            console.log("https://youtu.be/2f5KAIt0fRA?si=1ggMxSRFn_0cy_LZ");
             fetchData(); // Retry fetching if the movie is not from the US, UK or New Zealand
         }
     }
     else {
+        console.log("Adult content detected, fetching another movie.");
         fetchData(); // Retry fetching if the content is adult
     }
 }
@@ -74,38 +79,25 @@ async function fetchData() {
 function updateUI(data) {// An HTML element to display the movie poster
     container.innerHTML = ''; // Clear previous content
     element.innerHTML = `<strong>${data.title}</strong>`;
-    plot.innerHTML = `${data.overview}`;
+    plot.innerHTML =  data.overview ? `${data.overview}` : "I Dunno! No Plot Found.";
+    countryOfFilm = data.production_countries && data.production_countries.length > 0
+        ? data.production_countries[0].name
+        : "Unknown Country";
+    genreOfFilm = data.genres && data.genres.length > 0
+        ? data.genres[0].name
+        : "Unknown Genre";
+    yearOfFilm = data.release_date ? data.release_date.split('-')[0] : "Unknown Year";
 
-
-
-    genreDateCountryIMDB.innerHTML = `${data.genres[0].name} | ${data.release_date} | ${data.production_countries[0].name} | <a href="https://www.imdb.com/title/${data.imdb_id}" target="_blank">IMDB</a>`;
+    genreDateIMDB.innerHTML = `${genreOfFilm} | ${yearOfFilm} | ${countryOfFilm} | <a href="https://www.imdb.com/title/${data.imdb_id}" target="_blank">IMDB</a>`;
 
     container.appendChild(element);
-    container.appendChild(genreDateCountryIMDB);
+    container.appendChild(genreDateIMDB);
     container.appendChild(plot);
 
     // Update the movie poster
     poster.src = data.poster_path ? `https://image.tmdb.org/t/p/w500${data.poster_path}` : 'NoPosterAvailable.png';
 }
-
-
-// function choseGenre() {
-//     const genreType = document.getElementById('genres');
-//     const selectedGenre = genreType.value;
-
-//     // You can now use the selectedGenre variable to filter or fetch data based on the chosen genre
-//     console.log(`Selected genre: ${selectedGenre}`);
-
-
-//     if (genreType === 0) {
-//         try {
-//             fetchData();
-//         }
-//         catch (error) {
-//             console.error('Error fetching data:', error);
-//             fetchData(); // Retry fetching if the movie is not found
-//         }
-//     }
-//     else if (data.genres[0].id == genreType) { }
-//     else { }
-// }
+/*
+    function genreSelected(){
+    }
+*/
