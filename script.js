@@ -7,6 +7,7 @@ const plot = document.createElement('p');
 const genreOfChoice = document.getElementById('genres');
 const genres = [28, 12, 16, 35, 80, 99, 18, 10751, 14, 36, 27, 10402, 9648, 10749, 878, 10770, 53, 10752, 37];
 
+
 let countryOfFilm = "Unknown Country";
 let genreOfFilm = "Unknown Genre";
 let yearOfFilm = "Unknown Year";
@@ -53,33 +54,45 @@ async function fetchData() {
     }
 
     const data = await response.json();
+    const selectedGenre = parseInt(genreOfChoice.value);
+    const matchesGenre = data.genres.some(genre => genre.id === selectedGenre);
+    console.log(`Matches Selected Genre: ${matchesGenre}`);
 
     // Call a function to update the UI with this data
     if (data.adult === false) {
-        if (data.vote_average >= 4.0) {
-            try {
+        try {
+            if (selectedGenre === data.genres[0].id) // If the selected genre matches the movie's genre
+            {
                 console.log(`Title: ${data.title};\nGenres: ${data.genres[0].name};\nimdb_id: ${data.imdb_id};\nCountry: ${data.production_countries[0].name};\nRelease Date: ${data.release_date};\nVote Average: ${data.vote_average};\n \nAdult: ${data.adult};\n \n--- END OF LINE ---\n \n`);
                 updateUI(data);
-            } catch (error) {
-                console.error('Error updating UI:', error);
-                fetchData(); // Retry fetching if there's an error updating the UI
             }
-        }
-        else {
-            console.log("https://youtu.be/2f5KAIt0fRA?si=1ggMxSRFn_0cy_LZ");
-            fetchData(); // Retry fetching if the movie is not from the US, UK or New Zealand
+            else if (selectedGenre === 0) // If 'All Genres' is selected, show any genre
+            {
+                console.log(`Title: ${data.title};\nGenres: ${data.genres[0].name};\nimdb_id: ${data.imdb_id};\nCountry: ${data.production_countries[0].name};\nRelease Date: ${data.release_date};\nVote Average: ${data.vote_average};\n \nAdult: ${data.adult};\n \n--- END OF LINE ---\n \n`);
+                updateUI(data);
+
+            }
+            else {
+                console.log("Genre does not match selected genre, fetching another movie.");
+                fetchData(); // Retry fetching if the genre does not match
+            }
+        } catch (error) {
+            console.error('Error updating UI:', error);
+            fetchData(); // Retry fetching if there's an error updating the UI
         }
     }
     else {
         console.log("Adult content detected, fetching another movie.");
         fetchData(); // Retry fetching if the content is adult
     }
+
 }
 
-function updateUI(data) {// An HTML element to display the movie poster
+function updateUI(data) {
+    // An HTML element to display the movie poster
     container.innerHTML = ''; // Clear previous content
     element.innerHTML = `<strong>${data.title}</strong>`;
-    plot.innerHTML =  data.overview ? `${data.overview}` : "I Dunno! No Plot Found.";
+    plot.innerHTML = data.overview ? `${data.overview}` : "I Dunno! No Plot Found.";
     countryOfFilm = data.production_countries && data.production_countries.length > 0
         ? data.production_countries[0].name
         : "Unknown Country";
