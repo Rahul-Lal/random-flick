@@ -5,7 +5,6 @@ const element = document.createElement('h2');
 const genreDateIMDB = document.createElement('p');
 const plot = document.createElement('p');
 const genreOfChoice = document.getElementById('genres');
-const genres = [28, 12, 16, 35, 80, 99, 18, 10751, 14, 36, 27, 10402, 9648, 10749, 878, 10770, 53, 10752, 37];
 
 
 let countryOfFilm = "Unknown Country";
@@ -17,9 +16,9 @@ let yearOfFilm = "Unknown Year";
 */
 
 // Refresh the page every 2.5 seconds (2500 milliseconds)
-setInterval(function() {
-  window.location.reload();
-}, 2500);
+// setInterval(function () {
+//     window.location.reload();
+// }, 2500);
 
 startPage();
 
@@ -44,6 +43,7 @@ async function startPage() {
 }
 
 async function fetchData() {
+    loadingFunction();
     let number = Math.floor(Math.random() * 1000000) + 1; // Random number between 1 and 1 million
     console.log(`ID: ${number}`);
 
@@ -60,27 +60,34 @@ async function fetchData() {
     }
 
     const data = await response.json();
-    const selectedGenre = parseInt(genreOfChoice.value);
-    const matchesGenre = data.genres.some(genre => genre.id === selectedGenre);
-    console.log(`Matches Selected Genre: ${matchesGenre}`);
+    const selectedGenres = Array.from(
+        document.querySelectorAll('#genres input[type="checkbox"]:checked')
+    ).map(checkbox => parseInt(checkbox.value));
+
+    const matchesGenre = selectedGenres.length === 0 ||
+        data.genres.some(genre => selectedGenres.includes(genre.id));
+
+
+    console.log(`Selected Genres: ${selectedGenres}`);
+    console.log(`Matches Genre: ${matchesGenre}`);
 
     // Call a function to update the UI with this data
     if (data.adult === false) {
         try {
-            if (selectedGenre === data.genres[0].id) // If the selected genre matches the movie's genre
+            if (selectedGenres.includes(data.genres[0].id)) // If the selected genre matches the movie's genre
             {
                 filmSelectedviaConsole(data);
                 updateUI(data);
             }
-            else if (selectedGenre === 0) // If 'All Genres' is selected, show any genre
+            else if (selectedGenres.length === 0) // If 'All Genres' is selected, show any genre
             {
                 filmSelectedviaConsole(data);
                 updateUI(data);
 
             }
             else {
-                console.log("Genre does not match selected genre, fetching another movie.");
                 loadingFunction();
+                console.log("Genre does not match selected genre, fetching another movie.");
                 fetchData(); // Retry fetching if the genre does not match
             }
         } catch (error) {
@@ -90,6 +97,7 @@ async function fetchData() {
     }
     else {
         console.log("Adult content detected, fetching another movie.");
+        loadingFunction();
         fetchData(); // Retry fetching if the content is adult
     }
 
@@ -126,7 +134,6 @@ function loadingFunction() {
     container.innerHTML = ''; // Clear previous content
     element.innerHTML = `<strong>Searching Film</strong>`;
     plot.innerHTML = "Be with you in a moment...";
-    genreDateIMDB.innerHTML = `A <strong>${genreOfChoice.options[genreOfChoice.selectedIndex].text}</strong> movie is coming right up!`;
 
     container.appendChild(element);
     container.appendChild(plot);

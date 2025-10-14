@@ -21,34 +21,34 @@
 
 <body>
     <h1>Random Flick</h1>
-    
+
     <div id="data-container">
         <h2 id="movie-title">Title Loading...</h2>
         <p id="movie-overview">Overview Loading...</p>
     </div>
     <br />
-    <select id="genres" name="genres">
-        <option value="0">All Genres</option>
-        <option value="28">Action</option>
-        <option value="12">Adventure</option>
-        <option value="16">Animation</option>
-        <option value="35">Comedy</option>
-        <option value="80">Crime</option>
-        <option value="99">Documentary</option>
-        <option value="18">Drama</option>
-        <option value="10751">Family</option>
-        <option value="14">Fantasy</option>
-        <option value="36">History</option>
-        <option value="27">Horror</option>
-        <option value="10402">Music</option>
-        <option value="9648">Mystery</option>
-        <option value="10749">Romance</option>
-        <option value="878">Science Fiction</option>
-        <option value="10770">TV Movie</option>
-        <option value="53">Thriller</option>
-        <option value="10752">War</option>
-        <option value="37">Western</option>
-    </select>
+    <div id="genres" name="genres">
+        <h3>Select Genres:</h3>
+        <label><input type="checkbox" value="28">Action</label>
+        <label><input type="checkbox" value="12">Adventure</label>
+        <label><input type="checkbox" value="16">Animation</label>
+        <label><input type="checkbox" value="35">Comedy</label>
+        <label><input type="checkbox" value="80">Crime</label>
+        <label><input type="checkbox" value="99">Documentary</label>
+        <label><input type="checkbox" value="18">Drama</label>
+        <label><input type="checkbox" value="10751">Family</label>
+        <label><input type="checkbox" value="14">Fantasy</label>
+        <label><input type="checkbox" value="36">History</label>
+        <label><input type="checkbox" value="27">Horror</label>
+        <label><input type="checkbox" value="10402">Music</label>
+        <label><input type="checkbox" value="9648">Mystery</label>
+        <label><input type="checkbox" value="10749">Romance</label>
+        <label><input type="checkbox" value="878">Science Fiction</label>
+        <label><input type="checkbox" value="10770">TV Movie</label>
+        <label><input type="checkbox" value="53">Thriller</label>
+        <label><input type="checkbox" value="10752">War</label>
+        <label><input type="checkbox" value="37">Western</label>
+    </div>
 
     <button onclick="fetchData()">What to Watch?</button>
     <img id="movie-poster" src="" alt="Loading..." />
