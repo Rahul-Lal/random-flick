@@ -50,8 +50,21 @@
         <label><input type="checkbox" value="37">Western</label>
     </div>
 
-    <button onclick="fetchData()">What to Watch?</button>
+    <div id="year-filter">
+        <h3>Release Year:</h3>
+        <label>
+            From:
+        </label>
+        <input type="number" id="startingYear" placeholder="e.g., 2002" min="1930" max="2025">
+        <label>
+            To:
+        </label>
+        <input type="number" id="endingYear" placeholder="e.g., 2025" min="1930" max="2025">
+
+    </div>
     <img id="movie-poster" src="" alt="Loading..." />
+
+    <button onclick="fetchData()">What to Watch?</button>
     <script src="script.js" defer></script>
 </body>
 

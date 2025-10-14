@@ -5,6 +5,8 @@ const element = document.createElement('h2');
 const genreDateIMDB = document.createElement('p');
 const plot = document.createElement('p');
 const genreOfChoice = document.getElementById('genres');
+const startingYear = document.getElementById('startingYear');
+const endingYear = document.getElementById('endingYear');
 
 
 let countryOfFilm = "Unknown Country";
@@ -71,19 +73,22 @@ async function fetchData() {
     console.log(`Selected Genres: ${selectedGenres}`);
     console.log(`Matches Genre: ${matchesGenre}`);
 
+    yearOfFilm = data.release_date ? data.release_date.split('-')[0] : "Unknown Year";
+    const startYear = startingYear.value ? parseInt(startingYear.value) : 1920;
+    const endYear = endingYear.value ? parseInt(endingYear.value) : new Date().getFullYear();
+
     // Call a function to update the UI with this data
     if (data.adult === false) {
         try {
             if (selectedGenres.includes(data.genres[0].id)) // If the selected genre matches the movie's genre
             {
-                filmSelectedviaConsole(data);
-                updateUI(data);
+                document.title = `Random Flick | ${data.title}`;
+                selectYearsOfFilm();
             }
             else if (selectedGenres.length === 0) // If 'All Genres' is selected, show any genre
             {
-                filmSelectedviaConsole(data);
-                updateUI(data);
-
+                document.title = `Random Flick | ${data.title}`;
+                selectYearsOfFilm();
             }
             else {
                 loadingFunction();
@@ -101,6 +106,18 @@ async function fetchData() {
         fetchData(); // Retry fetching if the content is adult
     }
 
+
+    function selectYearsOfFilm() {
+        if (yearOfFilm !== "Unknown Year" && (yearOfFilm < startYear || yearOfFilm > endYear)) {
+            console.log("Year does not match selected range, fetching another movie.");
+            fetchData(); // Retry fetching if the year does not match
+        }
+        else {
+            document.title = `Random Flick | ${data.title}`;
+            filmSelectedviaConsole(data);
+            updateUI(data);
+        }
+    }
 }
 
 function updateUI(data) {
@@ -134,6 +151,9 @@ function loadingFunction() {
     container.innerHTML = ''; // Clear previous content
     element.innerHTML = `<strong>Searching Film</strong>`;
     plot.innerHTML = "Be with you in a moment...";
+
+    genreDateIMDB.innerHTML = `--- LOADING ---`;
+
 
     container.appendChild(element);
     container.appendChild(plot);
