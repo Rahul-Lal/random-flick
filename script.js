@@ -74,6 +74,18 @@ async function fetchData() {
             }
             else {
                 console.log("Genre does not match selected genre, fetching another movie.");
+
+                container.innerHTML = ''; // Clear previous content
+                element.innerHTML = `<strong>Searching Film</strong>`;
+                plot.innerHTML = "Be with you in a moment...";
+                genreDateIMDB.innerHTML = `A <strong>${genreOfChoice.options[genreOfChoice.selectedIndex].text}</strong> movie is coming right up!`;
+                poster.src = 'Loading.gif';
+
+
+                container.appendChild(element);
+                container.appendChild(plot);
+                container.appendChild(genreDateIMDB);
+
                 fetchData(); // Retry fetching if the genre does not match
             }
         } catch (error) {
