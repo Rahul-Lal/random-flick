@@ -89,31 +89,38 @@ a:hover {
     font-weight: bolder;
 }
 
+#genres {
+    background-color: #555555;
+    color: white;
+    font-family: 'Limelight', sans-serif;
+    border: none;
+    padding: 10px 20px;
+    font-size: 1.2em;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-top: 20px;
+}
+
 @media (max-width: 600px) {
     body{
         background-image: url(redcurtains.jpg);
     }
-    #data-container {
-        padding: 0 10px;
+    #data-container p {
+        font-size: 15px;
+        width: 100%;
     }
     #movie-poster {
         width: 12.5em;
         height: auto;
         position: relative;
-        z-index: -0;
+        z-index: 2;
     }
-    h1 {
-        font-size: 2.75em;
+    #data-container h2 {
+        font-size: 25px;
     }
-    h2 {
-        font-size: 2.33em;
-    }
-    p {
-        font-size: 5px;
-        width: 100%;
-    }
+
     #movie-overview {
-        font-size: 1px;
+        font-size: 10px;
     }
     button {
         font-size: 1.33em;
@@ -121,6 +128,12 @@ a:hover {
         position: absolute;
         bottom: 0px;
         left: 0;
+    }
+
+#genres {
+    text-align: center;
+    font-size: 1.33em;
+    width: 100%;
     }
 }
 

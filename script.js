@@ -15,6 +15,12 @@ let yearOfFilm = "Unknown Year";
 /*
     Start by fetching data for a specific movie 'Spider-Man' (ID: 557) to ensure the page loads with content - then allow random fetches
 */
+
+// Refresh the page every 2.5 seconds (2500 milliseconds)
+setInterval(function() {
+  window.location.reload();
+}, 2500);
+
 startPage();
 
 async function startPage() {
@@ -63,29 +69,18 @@ async function fetchData() {
         try {
             if (selectedGenre === data.genres[0].id) // If the selected genre matches the movie's genre
             {
-                console.log(`Title: ${data.title};\nGenres: ${data.genres[0].name};\nimdb_id: ${data.imdb_id};\nCountry: ${data.production_countries[0].name};\nRelease Date: ${data.release_date};\nVote Average: ${data.vote_average};\n \nAdult: ${data.adult};\n \n--- END OF LINE ---\n \n`);
+                filmSelectedviaConsole(data);
                 updateUI(data);
             }
             else if (selectedGenre === 0) // If 'All Genres' is selected, show any genre
             {
-                console.log(`Title: ${data.title};\nGenres: ${data.genres[0].name};\nimdb_id: ${data.imdb_id};\nCountry: ${data.production_countries[0].name};\nRelease Date: ${data.release_date};\nVote Average: ${data.vote_average};\n \nAdult: ${data.adult};\n \n--- END OF LINE ---\n \n`);
+                filmSelectedviaConsole(data);
                 updateUI(data);
 
             }
             else {
                 console.log("Genre does not match selected genre, fetching another movie.");
-
-                container.innerHTML = ''; // Clear previous content
-                element.innerHTML = `<strong>Searching Film</strong>`;
-                plot.innerHTML = "Be with you in a moment...";
-                genreDateIMDB.innerHTML = `A <strong>${genreOfChoice.options[genreOfChoice.selectedIndex].text}</strong> movie is coming right up!`;
-                poster.src = 'Loading.gif';
-
-
-                container.appendChild(element);
-                container.appendChild(plot);
-                container.appendChild(genreDateIMDB);
-
+                loadingFunction();
                 fetchData(); // Retry fetching if the genre does not match
             }
         } catch (error) {
@@ -122,7 +117,20 @@ function updateUI(data) {
     // Update the movie poster
     poster.src = data.poster_path ? `https://image.tmdb.org/t/p/w500${data.poster_path}` : 'NoPosterAvailable.png';
 }
-/*
-    function genreSelected(){
-    }
-*/
+
+function filmSelectedviaConsole(data) {
+    console.log(`Title: ${data.title};\nGenres: ${data.genres[0].name};\nimdb_id: ${data.imdb_id};\nCountry: ${data.production_countries[0].name};\nRelease Date: ${data.release_date};\nVote Average: ${data.vote_average};\n \nAdult: ${data.adult};\n \n--- END OF LINE ---\n \n`);
+}
+
+function loadingFunction() {
+    container.innerHTML = ''; // Clear previous content
+    element.innerHTML = `<strong>Searching Film</strong>`;
+    plot.innerHTML = "Be with you in a moment...";
+    genreDateIMDB.innerHTML = `A <strong>${genreOfChoice.options[genreOfChoice.selectedIndex].text}</strong> movie is coming right up!`;
+
+    container.appendChild(element);
+    container.appendChild(plot);
+    container.appendChild(genreDateIMDB);
+
+    poster.src = 'Loading.gif';
+}
