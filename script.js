@@ -108,7 +108,7 @@ async function fetchData() {
 
 
     function selectYearsOfFilm() {
-        if (yearOfFilm !== "Unknown Year" && (yearOfFilm < startYear || yearOfFilm > endYear)) {
+        if (yearOfFilm === "Unknown Year" && (yearOfFilm < startYear || yearOfFilm > endYear)) {
             console.log("Year does not match selected range, fetching another movie.");
             fetchData(); // Retry fetching if the year does not match
         }
@@ -117,6 +117,12 @@ async function fetchData() {
             filmSelectedviaConsole(data);
             updateUI(data);
         }
+    }
+
+    function countryOfFilmCheck() {
+        countryOfFilm = data.production_countries && data.production_countries.length > 0
+            ? data.production_countries[0].name
+            : "Unknown Country";
     }
 }
 
@@ -144,7 +150,7 @@ function updateUI(data) {
 }
 
 function filmSelectedviaConsole(data) {
-    console.log(`Title: ${data.title};\nGenres: ${data.genres[0].name};\nimdb_id: ${data.imdb_id};\nCountry: ${data.production_countries[0].name};\nRelease Date: ${data.release_date};\nVote Average: ${data.vote_average};\n \nAdult: ${data.adult};\n \n--- END OF LINE ---\n \n`);
+        console.log(`Title: ${data.title};\nGenres: ${data.genres[0].name};\nimdb_id: ${data.imdb_id};\nCountry: ${data.production_countries[0].name};\nRelease Date: ${data.release_date};\nVote Average: ${data.vote_average};\n \nAdult: ${data.adult};\n \n--- END OF LINE ---\n \n`);
 }
 
 function loadingFunction() {

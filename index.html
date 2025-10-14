@@ -26,7 +26,8 @@
         <h2 id="movie-title">Title Loading...</h2>
         <p id="movie-overview">Overview Loading...</p>
     </div>
-    <br />
+    <img id="movie-poster" src="" alt="Loading..." />
+    <button onclick="fetchData()">What to Watch?</button>
     <div id="genres" name="genres">
         <h3>Select Genres:</h3>
         <label><input type="checkbox" value="28">Action</label>
@@ -50,6 +51,63 @@
         <label><input type="checkbox" value="37">Western</label>
     </div>
 
+    
+    <div id="countries" name="countries">
+        <h3>Select Countries:</h3>
+        <label><input type="checkbox" value="United States of America">US</label>
+        <label><input type="checkbox" value="United Kingdom">UK</label>
+        <label><input type="checkbox" value="Canada">Canada</label>
+        <label><input type="checkbox" value="Australia">Australia</label>
+        <label><input type="checkbox" value="India">India</label>
+        <label><input type="checkbox" value="France">France</label>
+        <label><input type="checkbox" value="Germany">Germany</label>
+        <label><input type="checkbox" value="Italy">Italy</label>
+        <label><input type="checkbox" value="Spain">Spain</label>
+        <label><input type="checkbox" value="Japan">Japan</label>
+        <label><input type="checkbox" value="China">China</label>
+        <label><input type="checkbox" value="South Korea">South Korea</label>
+        <label><input type="checkbox" value="Russia">Russia</label>
+        <label><input type="checkbox" value="Brazil">Brazil</label>
+        <label><input type="checkbox" value="Mexico">Mexico</label>
+        <label><input type="checkbox" value="New Zealand">New Zealand</label>
+        <label><input type="checkbox" value="Ireland">Ireland</label>
+        <label><input type="checkbox" value="Sweden">Sweden</label>
+        <label><input type="checkbox" value="Netherlands">Netherlands</label>
+        <label><input type="checkbox" value="Belgium">Belgium</label>
+        <label><input type="checkbox" value="Switzerland">Switzerland</label>
+        <label><input type="checkbox" value="Denmark">Denmark</label>
+        <label><input type="checkbox" value="Norway">Norway</label>
+        <label><input type="checkbox" value="Finland">Finland</label>
+        <label><input type="checkbox" value="Poland">Poland</label>
+        <label><input type="checkbox" value="Czech Republic">Czech Republic</label>
+        <label><input type="checkbox" value="Hungary">Hungary</label>
+        <label><input type="checkbox" value="Turkey">Turkey</label>
+        <label><input type="checkbox" value="Argentina">Argentina</label>
+        <label><input type="checkbox" value="Chile">Chile</label>
+        <label><input type="checkbox" value="Colombia">Colombia</label>
+        <label><input type="checkbox" value="Peru">Peru</label>
+        <label><input type="checkbox" value="Venezuela">Venezuela</label>
+        <label><input type="checkbox" value="Argentina">Argentina</label>
+        <label><input type="checkbox" value="South Africa">South Africa</label>
+        <label><input type="checkbox" value="Egypt">Egypt</label>
+        <label><input type="checkbox" value="Nigeria">Nigeria</label>
+        <label><input type="checkbox" value="Greece">Greece</label>
+        <label><input type="checkbox" value="Portugal">Portugal</label>
+        <label><input type="checkbox" value="Austria">Austria</label>
+        <label><input type="checkbox" value="Romania">Romania</label>
+        <label><input type="checkbox" value="Bulgaria">Bulgaria</label>
+        <label><input type="checkbox" value="Ukraine">Ukraine</label>
+        <label><input type="checkbox" value="Kazakhstan">Kazakhstan</label>
+        <label><input type="checkbox" value="Indonesia">Indonesia</label>
+        <label><input type="checkbox" value="Thailand">Thailand</label>
+        <label><input type="checkbox" value="Philippines">Philippines</label>
+        <label><input type="checkbox" value="Malaysia">Malaysia</label>
+        <label><input type="checkbox" value="Singapore">Singapore</label>
+        <label><input type="checkbox" value="Vietnam">Vietnam</label>
+        <label><input type="checkbox" value="Bangladesh">Bangladesh</label>
+        <label><input type="checkbox" value="Pakistan">Pakistan</label>
+    </div>
+
     <div id="year-filter">
         <h3>Release Year:</h3>
         <label>
@@ -62,9 +120,7 @@
         <input type="number" id="endingYear" placeholder="e.g., 2025" min="1930" max="2025">
 
     </div>
-    <img id="movie-poster" src="" alt="Loading..." />
 
-    <button onclick="fetchData()">What to Watch?</button>
     <script src="script.js" defer></script>
 </body>
 

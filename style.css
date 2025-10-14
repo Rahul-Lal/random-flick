@@ -90,7 +90,7 @@ a:hover {
 }
 
 #genres {
-    background-color: #343434;
+    background-color: transparent;
     color: white;
     font-family: 'Limelight', sans-serif;
     border: none;
