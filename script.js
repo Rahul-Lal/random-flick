@@ -66,6 +66,8 @@ async function fetchData() {
         document.querySelectorAll('#genres input[type="checkbox"]:checked')
     ).map(checkbox => parseInt(checkbox.value));
 
+    document.title = `Random Flick | ${data.title}`;
+
     const matchesGenre = selectedGenres.length === 0 ||
         data.genres.some(genre => selectedGenres.includes(genre.id));
 
@@ -76,6 +78,7 @@ async function fetchData() {
     yearOfFilm = data.release_date ? data.release_date.split('-')[0] : "Unknown Year";
     const startYear = startingYear.value ? parseInt(startingYear.value) : 1920;
     const endYear = endingYear.value ? parseInt(endingYear.value) : new Date().getFullYear();
+    console.log(`Year of Film: ${yearOfFilm}, Start Year: ${startYear}, End Year: ${endYear}`);
 
     // Call a function to update the UI with this data
     if (data.adult === false) {
@@ -83,11 +86,13 @@ async function fetchData() {
             if (selectedGenres.includes(data.genres[0].id)) // If the selected genre matches the movie's genre
             {
                 document.title = `Random Flick | ${data.title}`;
+                loadingFunction();
                 selectYearsOfFilm();
             }
             else if (selectedGenres.length === 0) // If 'All Genres' is selected, show any genre
             {
                 document.title = `Random Flick | ${data.title}`;
+                loadingFunction();
                 selectYearsOfFilm();
             }
             else {
@@ -108,14 +113,27 @@ async function fetchData() {
 
 
     function selectYearsOfFilm() {
-        if (yearOfFilm === "Unknown Year" && (yearOfFilm < startYear || yearOfFilm > endYear)) {
-            console.log("Year does not match selected range, fetching another movie.");
-            fetchData(); // Retry fetching if the year does not match
+        if (yearOfFilm !== "Unknown Year" && (yearOfFilm >= startYear && yearOfFilm <= endYear)) {
+            console.log("Year matches selected range.");
+            filmSelectedviaConsole(data);
+            updateUI(data);
         }
-        else {
+        else if ((startYear === 0) && (endYear === 0)) {
             document.title = `Random Flick | ${data.title}`;
             filmSelectedviaConsole(data);
             updateUI(data);
+        }
+        else if (((startYear !== 0) && (endYear === 0)) || ((startYear === 0) && (endYear !== 0))) {
+            alert("Please select both starting and ending years, or leave both as default (1920 to current year).");
+            fetchData();
+        }
+        else if (yearOfFilm === "Unknown Year") {
+            console.log("Year is unknown, fetching another movie.");
+            fetchData();
+        }
+        else {
+            console.log("Year does not match selected range, fetching another movie.");
+            fetchData(); // Retry fetching if the year does not match
         }
     }
 
@@ -150,7 +168,7 @@ function updateUI(data) {
 }
 
 function filmSelectedviaConsole(data) {
-        console.log(`Title: ${data.title};\nGenres: ${data.genres[0].name};\nimdb_id: ${data.imdb_id};\nCountry: ${data.production_countries[0].name};\nRelease Date: ${data.release_date};\nVote Average: ${data.vote_average};\n \nAdult: ${data.adult};\n \n--- END OF LINE ---\n \n`);
+    console.log(`Title: ${data.title};\nGenres: ${data.genres[0].name};\nimdb_id: ${data.imdb_id};\nCountry: ${data.production_countries[0].name};\nRelease Date: ${data.release_date};\nVote Average: ${data.vote_average};\n \nAdult: ${data.adult};\n \n--- END OF LINE ---\n \n`);
 }
 
 function loadingFunction() {
