@@ -62,12 +62,12 @@ async function fetchData() {
     }
 
     const data = await response.json();
-    const selectedGenres = Array.from(
-        document.querySelectorAll('#genres input[type="checkbox"]:checked')
-    ).map(checkbox => parseInt(checkbox.value));
 
     document.title = `Random Flick | ${data.title}`;
 
+    const selectedGenres = Array.from(
+        document.querySelectorAll('#genres input[type="checkbox"]:checked')
+    ).map(checkbox => parseInt(checkbox.value));
     const matchesGenre = selectedGenres.length === 0 ||
         data.genres.some(genre => selectedGenres.includes(genre.id));
 
@@ -80,13 +80,19 @@ async function fetchData() {
     const endYear = endingYear.value ? parseInt(endingYear.value) : new Date().getFullYear();
     console.log(`Year of Film: ${yearOfFilm}, Start Year: ${startYear}, End Year: ${endYear}`);
 
+
+    countryOfFilm = data.production_countries && data.production_countries.length > 0
+        ? data.production_countries[0].name
+        : "Unknown Country";
+    console.log(`Country of Film: ${countryOfFilm}`);
+
     // Call a function to update the UI with this data
     if (data.adult === false) {
         try {
             if (selectedGenres.includes(data.genres[0].id)) // If the selected genre matches the movie's genre
             {
-                document.title = `Random Flick | ${data.title}`;
                 loadingFunction();
+                console.log("Genre matches selected genre.");
                 selectYearsOfFilm();
             }
             else if (selectedGenres.length === 0) // If 'All Genres' is selected, show any genre
@@ -138,9 +144,7 @@ async function fetchData() {
     }
 
     function countryOfFilmCheck() {
-        countryOfFilm = data.production_countries && data.production_countries.length > 0
-            ? data.production_countries[0].name
-            : "Unknown Country";
+
     }
 }
 
