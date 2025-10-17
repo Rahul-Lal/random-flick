@@ -102,6 +102,23 @@ a:hover {
     cursor: pointer;
 }
 
+input[type="checkbox"] {
+    margin-right: 8px;
+    transform: scale(1.25);
+    cursor: pointer;
+}
+
+input[type="checkbox"]:hover {
+    transform: scale(1.30);
+}
+
+input[type="number"] {
+    font-size: 1.2em;
+    border-radius: 5px;
+    padding: 5px;
+    margin-left: 10px;
+}
+
 @media (max-width: 600px) {
     body{
         background-image: url(redcurtains.jpg);

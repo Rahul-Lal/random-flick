@@ -63,7 +63,7 @@ async function fetchData() {
 
     const data = await response.json();
 
-    document.title = `Random Flick | ${data.title}`;
+    document.title = `${data.title} | Random Flick`;
 
     const selectedGenres = Array.from(
         document.querySelectorAll('#genres input[type="checkbox"]:checked')
@@ -97,7 +97,7 @@ async function fetchData() {
             }
             else if (selectedGenres.length === 0) // If 'All Genres' is selected, show any genre
             {
-                document.title = `Random Flick | ${data.title}`;
+                document.title = `${data.title} | Random Flick`;
                 loadingFunction();
                 selectYearsOfFilm();
             }
@@ -125,7 +125,7 @@ async function fetchData() {
             updateUI(data);
         }
         else if ((startYear === 0) && (endYear === 0)) {
-            document.title = `Random Flick | ${data.title}`;
+            document.title = `${data.title} | Random Flick`;
             filmSelectedviaConsole(data);
             updateUI(data);
         }
