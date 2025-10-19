@@ -113,7 +113,11 @@ input[type="checkbox"]:hover {
 }
 
 input[type="number"] {
-    font-size: 1.2em;
+    background-color: transparent;
+    border-color: #ff4500;
+    color:white;
+    width: 125px;
+    font-size: 1.5em;
     border-radius: 5px;
     padding: 5px;
     margin-left: 10px;
@@ -178,8 +182,10 @@ input[type="number"] {
     button {
         font-size: 1.33em;
         width: 100%;
-        position: fixed;
-        bottom: 0px;
-        left: 0;
+        position: static;
+        bottom: 20px;
+    }
+    footer {
+        font-size: 3.75em;
     }
 }
