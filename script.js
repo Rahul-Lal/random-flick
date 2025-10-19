@@ -56,16 +56,15 @@ async function fetchData() {
     // If you have a country dropdown (optional)
     const selectedCountries = Array.from(document.querySelectorAll('#countries input[type="checkbox"]:checked')).map(checkbox => checkbox.value);
 
-    // ✅ TMDB supports only one region code, so pick one if multiple are checked
-    let regionCode = '';
-    if (selectedCountries.length > 0) {
-        regionCode = selectedCountries[Math.floor(Math.random() * selectedCountries.length)];
-    }
+    // ✅ TMDB supports multiple origin countries (production countries)
+    let countryParam = selectedCountries.length > 0
+        ? `&with_origin_country=${selectedCountries.join(',')}`
+        : '';
+
 
     // Build base query parameters
     let genreParam = selectedGenres.length ? `&with_genres=${selectedGenres.join(',')}` : '';
     let yearParam = `&primary_release_date.gte=${startYear}-01-01&primary_release_date.lte=${endYear}-12-31`;
-    let countryParam = regionCode ? `&region=${regionCode}` : '';
 
     // Synthetic randomness: if no filters chosen, randomize one or two for flavor
     if (selectedGenres.length === 0 && !startingYear.value && !endingYear.value && selectedCountries.length === 0) {
