@@ -4,7 +4,7 @@ const poster = document.getElementById('movie-poster');
 const element = document.createElement('h2');
 const genreDateIMDB = document.createElement('p');
 const plot = document.createElement('p');
-const genreOfChoice = document.getElementById('genres');
+const genres = [28, 12, 16, 35, 80, 99, 18, 10751, 14, 36, 27, 10402, 9648, 10749, 878, 10770, 53, 10752, 37];
 const startingYear = document.getElementById('startingYear');
 const endingYear = document.getElementById('endingYear');
 
@@ -46,129 +46,102 @@ async function startPage() {
 
 async function fetchData() {
     loadingFunction();
-    let number = Math.floor(Math.random() * 1000000) + 1; // Random number between 1 and 1 million
-    console.log(`ID: ${number}`);
 
-    const response = await fetch(`https://api.themoviedb.org/3/movie/${number}?api_key=96628c0e6c6bba7100b21737333c56cf`); // Replace with your API endpoint
+    // Collect filter inputs
+    const selectedGenres = Array.from(document.querySelectorAll('#genres input[type="checkbox"]:checked')).map(checkbox => parseInt(checkbox.value));
 
-    if (response.ok === false) {
+    const startYear = parseInt(startingYear.value) || 1920;
+    const endYear = parseInt(endingYear.value) || new Date().getFullYear();
+
+    // If you have a country dropdown (optional)
+    const selectedCountries = Array.from(document.querySelectorAll('#countries input[type="checkbox"]:checked')).map(checkbox => checkbox.value);
+
+    // ✅ TMDB supports only one region code, so pick one if multiple are checked
+    let regionCode = '';
+    if (selectedCountries.length > 0) {
+        regionCode = selectedCountries[Math.floor(Math.random() * selectedCountries.length)];
+    }
+
+    // Build base query parameters
+    let genreParam = selectedGenres.length ? `&with_genres=${selectedGenres.join(',')}` : '';
+    let yearParam = `&primary_release_date.gte=${startYear}-01-01&primary_release_date.lte=${endYear}-12-31`;
+    let countryParam = regionCode ? `&region=${regionCode}` : '';
+
+    // Synthetic randomness: if no filters chosen, randomize one or two for flavor
+    if (selectedGenres.length === 0 && !startingYear.value && !endingYear.value && selectedCountries.length === 0) {
+        const randomGenre = genres[Math.floor(Math.random() * genres.length)];
+        const randomYear = Math.floor(Math.random() * (2024 - 1950 + 1)) + 1950;
+        genreParam = `&with_genres=${randomGenre}`;
+        yearParam = `&primary_release_year=${randomYear}`;
+        console.log(`Synthetic Randomized Filters → Genre: ${randomGenre}, Year: ${randomYear}`);
+    }
+
+    // Random page number within TMDB’s 500-page cap
+    const randomPage = Math.floor(Math.random() * 500) + 1;
+
+    console.log(`Fetching Discover Page: ${randomPage}`);
+
+    try {
+        // Fetch random results using Discover API
+        const discoverUrl = `https://api.themoviedb.org/3/discover/movie?api_key=96628c0e6c6bba7100b21737333c56cf&page=${randomPage}${genreParam}${yearParam}${countryParam}`;
+        const response = await fetch(discoverUrl);
+
+        if (!response.ok) {
+            console.error(`HTTP error! status: ${response.status}`);
+            return fetchData();
+        }
+
+        const data = await response.json();
+
+        if (!data.results?.length) {
+            console.warn("No movies found on this page, retrying...");
+            return fetchData();
+        }
+
+        // Randomly pick one movie from the page
+        const randomMovie = data.results[Math.floor(Math.random() * data.results.length)];
+
+        // Fetch full movie details for richer info
+        const detailsResponse = await fetch(
+            `https://api.themoviedb.org/3/movie/${randomMovie.id}?api_key=96628c0e6c6bba7100b21737333c56cf`
+        );
+        const fullData = await detailsResponse.json();
+
+        // Update UI
+        document.title = `${fullData.title} | Random Flick`;
+        filmSelectedviaConsole(fullData);
+        updateUI(fullData);
+
+    } catch (error) {
+        console.error("Error fetching movie:", error);
         fetchData();
-        throw new Error(`HTTP error! status: ${response.status}`);
-    }
-    if (response.status === 404) {
-        console.error('Movie not found');
-        alert("Movie Not Found. Please Try Again");
-        fetchData();
-    }
-
-    const data = await response.json();
-
-    document.title = `${data.title} | Random Flick`;
-
-    const selectedGenres = Array.from(
-        document.querySelectorAll('#genres input[type="checkbox"]:checked')
-    ).map(checkbox => parseInt(checkbox.value));
-    const matchesGenre = selectedGenres.length === 0 ||
-        data.genres.some(genre => selectedGenres.includes(genre.id));
-
-
-    console.log(`Selected Genres: ${selectedGenres}`);
-    console.log(`Matches Genre: ${matchesGenre}`);
-
-    yearOfFilm = data.release_date ? data.release_date.split('-')[0] : "Unknown Year";
-    const startYear = startingYear.value ? parseInt(startingYear.value) : 1920;
-    const endYear = endingYear.value ? parseInt(endingYear.value) : new Date().getFullYear();
-    console.log(`Year of Film: ${yearOfFilm}, Start Year: ${startYear}, End Year: ${endYear}`);
-
-
-    countryOfFilm = data.production_countries && data.production_countries.length > 0
-        ? data.production_countries[0].name
-        : "Unknown Country";
-    console.log(`Country of Film: ${countryOfFilm}`);
-
-    // Call a function to update the UI with this data
-    if (data.adult === false) {
-        try {
-            if (selectedGenres.includes(data.genres[0].id)) // If the selected genre matches the movie's genre
-            {
-                loadingFunction();
-                console.log("Genre matches selected genre.");
-                selectYearsOfFilm();
-            }
-            else if (selectedGenres.length === 0) // If 'All Genres' is selected, show any genre
-            {
-                document.title = `${data.title} | Random Flick`;
-                loadingFunction();
-                selectYearsOfFilm();
-            }
-            else {
-                loadingFunction();
-                console.log("Genre does not match selected genre, fetching another movie.");
-                fetchData(); // Retry fetching if the genre does not match
-            }
-        } catch (error) {
-            console.error('Error updating UI:', error);
-            fetchData(); // Retry fetching if there's an error updating the UI
-        }
-    }
-    else {
-        console.log("Adult content detected, fetching another movie.");
-        loadingFunction();
-        fetchData(); // Retry fetching if the content is adult
-    }
-
-
-    function selectYearsOfFilm() {
-        if (yearOfFilm !== "Unknown Year" && (yearOfFilm >= startYear && yearOfFilm <= endYear)) {
-            console.log("Year matches selected range.");
-            filmSelectedviaConsole(data);
-            updateUI(data);
-        }
-        else if ((startYear === 0) && (endYear === 0)) {
-            document.title = `${data.title} | Random Flick`;
-            filmSelectedviaConsole(data);
-            updateUI(data);
-        }
-        else if (((startYear !== 0) && (endYear === 0)) || ((startYear === 0) && (endYear !== 0))) {
-            alert("Please select both starting and ending years, or leave both as default (1920 to current year).");
-            fetchData();
-        }
-        else if (yearOfFilm === "Unknown Year") {
-            console.log("Year is unknown, fetching another movie.");
-            fetchData();
-        }
-        else {
-            console.log("Year does not match selected range, fetching another movie.");
-            fetchData(); // Retry fetching if the year does not match
-        }
-    }
-
-    function countryOfFilmCheck() {
-
     }
 }
 
 function updateUI(data) {
-    // An HTML element to display the movie poster
     container.innerHTML = ''; // Clear previous content
+
+    // Title and overview
     element.innerHTML = `<strong>${data.title}</strong>`;
-    plot.innerHTML = data.overview ? `${data.overview}` : "I Dunno! No Plot Found.";
-    countryOfFilm = data.production_countries && data.production_countries.length > 0
-        ? data.production_countries[0].name
-        : "Unknown Country";
-    genreOfFilm = data.genres && data.genres.length > 0
-        ? data.genres[0].name
-        : "Unknown Genre";
+    plot.innerHTML = data.overview || "I Dunno! No Plot Found.";
+
+    // Fallbacks
+    countryOfFilm = data.production_countries?.[0]?.name || "Unknown Country";
+    genreOfFilm = data.genres?.[0]?.name || "Unknown Genre";
     yearOfFilm = data.release_date ? data.release_date.split('-')[0] : "Unknown Year";
 
+    // Details line
     genreDateIMDB.innerHTML = `${genreOfFilm} | ${yearOfFilm} | ${countryOfFilm} | <a href="https://www.imdb.com/title/${data.imdb_id}" target="_blank">IMDB</a>`;
 
+    // Append elements
     container.appendChild(element);
     container.appendChild(genreDateIMDB);
     container.appendChild(plot);
 
-    // Update the movie poster
-    poster.src = data.poster_path ? `https://image.tmdb.org/t/p/w500${data.poster_path}` : 'NoPosterAvailable.png';
+    // Poster handling
+    poster.src = data.poster_path
+        ? `https://image.tmdb.org/t/p/w500${data.poster_path}`
+        : 'NoPosterAvailable.png';
 }
 
 function filmSelectedviaConsole(data) {
