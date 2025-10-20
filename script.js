@@ -47,6 +47,7 @@ async function startPage() {
 async function fetchData() {
     loadingFunction();
 
+    document.querySelectorAll("input").forEach(input => input.style.visibility = "hidden");
     // Collect filter inputs
     const selectedGenres = Array.from(document.querySelectorAll('#genres input[type="checkbox"]:checked')).map(checkbox => parseInt(checkbox.value));
 
@@ -141,6 +142,9 @@ function updateUI(data) {
     poster.src = data.poster_path
         ? `https://image.tmdb.org/t/p/w500${data.poster_path}`
         : 'NoPosterAvailable.png';
+
+
+    document.querySelectorAll("input").forEach(input => input.style.visibility = "visible");
 }
 
 function filmSelectedviaConsole(data) {
