@@ -125,7 +125,7 @@ input[type="number"] {
 
 @media (max-width: 600px) {
     body {
-        background-image: url(redcurtains.jpg);
+        background-image: url('mobile-background.jpg');
     }
 
     #data-container p {
@@ -171,7 +171,7 @@ input[type="number"] {
 
 @media (max-width: 768px) {
     body {
-        background-image: url(redcurtains.jpg);
+        background-image: url(mobile-background.jpg);
     }
 
     #movie-poster {
