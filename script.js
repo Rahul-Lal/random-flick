@@ -152,6 +152,8 @@ function filmSelectedviaConsole(data) {
 }
 
 function loadingFunction() {
+ poster.src = ? `https://image.tmdb.org/t/p/w500${data.poster_path}`
+        : 'NoPosterAvailable.png';   
     container.innerHTML = ''; // Clear previous content
     element.innerHTML = `<strong>Searching Film</strong>`;
     plot.innerHTML = "Be with you in a moment...";
@@ -162,8 +164,4 @@ function loadingFunction() {
     container.appendChild(element);
     container.appendChild(plot);
     container.appendChild(genreDateIMDB);
-
-    poster.src = data.poster_path
-        ? `https://image.tmdb.org/t/p/w500${data.poster_path}`
-        : 'NoPosterAvailable.png';
 }
