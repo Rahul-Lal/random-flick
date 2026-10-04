@@ -163,5 +163,7 @@ function loadingFunction() {
     container.appendChild(plot);
     container.appendChild(genreDateIMDB);
 
-    poster.src = 'Loading.gif';
+    poster.src = data.poster_path
+        ? `https://image.tmdb.org/t/p/w500${data.poster_path}`
+        : 'NoPosterAvailable.png';
 }
